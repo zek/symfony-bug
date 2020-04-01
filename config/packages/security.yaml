@@ -1,0 +1,29 @@
+security:
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        users_in_memory: { memory: null }
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: true
+            provider: users_in_memory
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+            remember_me:
+                # you cannot parameterise these environmental variables as the security configuration is prepended meaning the parameters defined by this bundle does not exist when security bundle is getting loaded and it might cause issues
+                name: '%env(REMEMBER_ME_COOKIE_NAME)%'
+                secret: '%env(REMEMBER_ME_COOKIE_SECRET)%'
+                lifetime: '%env(int:REMEMBER_ME_COOKIE_LIFETIME)%'
+                always_remember_me: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/profile, roles: ROLE_USER }
